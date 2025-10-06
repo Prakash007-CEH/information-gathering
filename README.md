@@ -201,3 +201,76 @@ Other notes: accept-ch header present (client hint declarations) and Script dete
 
 Takeaway: Google redirects google.com → www.google.com, serves a modern HTML5 site with CSP in report-only mode, has HttpOnly cookies, and uses common anti-framing protections.
 
+<img width="1897" height="920" alt="Screenshot 2025-10-06 185205" src="https://github.com/user-attachments/assets/da0ea359-9c43-41d7-8715-34d8d0adf163" />
+<img width="1897" height="920" alt="Screenshot 2025-10-06 185309" src="https://github.com/user-attachments/assets/3553abe6-40a0-4258-859e-013e84b715f7" />
+<img width="1895" height="717" alt="Screenshot 2025-10-06 185328" src="https://github.com/user-attachments/assets/4d51e1d5-c5f1-4526-ba44-44055d94d4db" />
+
+
+`whatweb -v http://google.com`
+This command is used for web reconnaissance — it identifies technologies and configurations used by a website.
+
+1. Initial Response (301 Redirect)
+
+Status: 301 Moved Permanently
+Means http://google.com redirects to http://www.google.com/.
+
+RedirectLocation: http://www.google.com/
+That’s the new URL.
+
+Server: gws
+Google Web Server — Google’s own web server software.
+
+Security Headers:
+
+X-Frame-Options: SAMEORIGIN → Prevents clickjacking by not allowing the page to load in an iframe from another domain.
+
+X-XSS-Protection: 0 → Disables browser’s built-in XSS protection (Google uses its own advanced systems instead).
+
+Content-Security-Policy-Report-Only → A policy for testing what kind of scripts/content can load (used to detect vulnerabilities).
+
+2. After Redirection (http://www.google.com/)
+
+Status: 200 OK → The page loaded successfully.
+
+Title: Google
+
+IP: 142.250.194.36
+
+Country: United States
+
+🧩 Detected Plugins & Technologies
+Plugin	Meaning
+Cookies [AEC, NID]	The website sets cookies (for tracking, preferences, or login).
+HTML5	The site uses modern HTML5.
+HTTPServer [gws]	The site is hosted on Google Web Server.
+HttpOnly Cookies	These cookies cannot be accessed via JavaScript → helps prevent XSS attacks.
+Script	The site contains script tags (JavaScript).
+UncommonHeaders	Non-standard but interesting headers (like content-security-policy-report-only).
+X-Frame-Options: SAMEORIGIN	Prevents embedding in other sites.
+X-XSS-Protection: 0	Browser XSS filter disabled (by Google).
+
+📡 HTTP Headers (Summary)
+
+Server: gws
+Content-Type: text/html; charset=ISO-8859-1
+Cache-Control: private, max-age=0
+Content-Security-Policy-Report-Only: ...
+X-XSS-Protection: 0
+X-Frame-Options: SAMEORIGIN
+Set-Cookie: AEC, NID (HttpOnly, Secure)
+
+These headers reveal:
+
+Server type (gws)
+
+Security configuration
+
+Cookie details
+
+Policy enforcement
+
+**⭐Conclusion**
+
+This practical focused on the information-gathering phase of cybersecurity testing using basic reconnaissance tools in Kali Linux. Tools such as nslookup, whois lookup, whatweb, Netcraft, and nc were used to collect details about domains, servers, and network configurations. Each tool helped reveal different aspects of the target — from DNS records and registration details to web technologies and server headers. Through this process, I learned how to identify domain ownership, hosting information, redirections, and basic security settings. Overall, this exercise helped me understand how initial reconnaissance builds the foundation for further vulnerability assessment and penetration testing.
+
+# ***This project is created only for educational and learning purposes. All tools and techniques demonstrated here should be used responsibly and legally. Do not test or gather information on any website or system without proper authorization. The author is not responsible for any misuse or illegal activity performed using this information.***
