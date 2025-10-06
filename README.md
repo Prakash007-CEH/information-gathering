@@ -1,29 +1,25 @@
-# information-gathering
+# Information Gathering
 This repository documents an information-gathering practical performed on Kali Linux. It includes explanations of tools, example commands, and suggested next steps. Only test systems you have authorization to test.
 
-## what is information gathering?
+## What is information gathering?
 
 Information gathering is the very first and most critical step of every penetration test.
 
 It does not matter if you have to assess the security of an entire network or a single web application, you need to know your targets in as much detail as possible.
 
-**⭐Now we are using tools of information gathering.**
+**⭐ Tools used for information gathering**
 
-Whois lookup,
-Netcraft,
-nslookup,
-nc(netcat),
-whatweb.
+Tools: whois, Netcraft, nslookup, nc (netcat), whatweb.
 
-**⭐Whois lookup**
+### Whois lookup
 
 Whois lookup is a tool that helps you find details about a domain name, like who owns it, when it was registered, and which company manages it. It’s useful for getting basic information about a website during the information-gathering part of security testing.
 
-Using whoise on Kali Linux:
+Using whois on Kali Linux:
 
 <img width="767" height="434" alt="Screenshot 2025-10-06 083554" src="https://github.com/user-attachments/assets/1007ce19-4f27-467c-b2ed-6a86ac77492c" />
 
-The whois google.com command is used to gather registration details about the domain google.com. The output shows information such as:
+The `whois google.com` command is used to gather registration details about the domain `google.com`.
 
 Domain Name: The domain you searched (in this case, GOOGLE.COM).
 
@@ -41,22 +37,22 @@ Registrar Contact Info: Includes an abuse contact email and phone number.
 
 This information helps identify who registered the domain, how long it has been active, and which DNS servers are in use — all useful during the information-gathering phase of security testing.
 
-Instead of using the command line tools, you can also rely on webbased tools such as: [whois.domaintools.com]( whois.domaintools.com)
-
+Instead of using command-line tools, you can also use web-based tools such as whois.domaintools.com.
 <img width="1007" height="864" alt="Screenshot 2025-10-06 145844" src="https://github.com/user-attachments/assets/ae397538-71b9-44ef-95b4-02a64adda03b" />
 
 
-Moreover we can get the IP address of one of the machines of the organization we are studying.
+We can also obtain the IP address of a machine belonging to the organization under investigation.
 
 <img width="1179" height="1022" alt="Screenshot 2025-10-06 083902" src="https://github.com/user-attachments/assets/b0b87792-ac10-4f47-8f9a-00d5fed4aabb" />
 
 This Whois information confirms that google.com is officially owned and managed by Google LLC through the registrar MarkMonitor. The record includes key administrative details such as creation and expiry dates, domain protection settings, and DNS server configuration — all valuable during the information-gathering phase to verify authenticity and ownership of a domain.
 
-**⭐Using Netcraft**
+### Using Netcraft
+
 
 Netcraft is a great alternative to the process previously illustrated.
 
-[sitereport.netcraft.com](sitereport.netcraft.com)
+Site report: https://sitereport.netcraft.com
 
 <img width="1855" height="939" alt="Screenshot 2025-10-06 114539" src="https://github.com/user-attachments/assets/c0074840-7585-4c44-b9c1-5d861fde5b7a" />
 <img width="1833" height="1000" alt="Screenshot 2025-10-06 114634" src="https://github.com/user-attachments/assets/6521a038-154a-4480-8f49-60c5fed95df4" />
@@ -65,7 +61,7 @@ Netcraft is a great alternative to the process previously illustrated.
 
 Website: Google.com
 
-First seen: November 1998
+First seen: November 1998 (as reported by Netcraft)
 
 Popularity rank: 106 globally
 
@@ -79,7 +75,7 @@ Domain registrar: MarkMonitor
 
 Hosting company: Google (USA)
 
-IP addresses: 142.250.191.206 (IPv4), 2a00:1450:400b:c02::8a (IPv6)
+IP addresses: 142.250.191.206 (IPv4), 2a00:1450:400b:c02::8a (IPv6).
 
 Nameserver: ns1.google.com
 
@@ -97,7 +93,7 @@ X-XSS-Protection: Disabled (modern browsers rely on CSP instead)
 
 **👉Privacy & Standards:**
 
-P3P: Declares privacy practices (older privacy standard)
+P3P: Legacy privacy standard (largely deprecated).
 
 Doctype: HTML5 (modern web standard for pages) 
 
@@ -114,7 +110,7 @@ Security headers used to protect users
 
 Privacy standards and modern web technologies
 
-**⭐nslookup**
+### nslookup
 
 Nslookup is another very handy tool that lets you translate hostnames to IP addresses and vice versa.
 
@@ -122,11 +118,11 @@ Nslookup is another very handy tool that lets you translate hostnames to IP addr
 
 The nslookup command queries the DNS to find the IP addresses associated with a domain.
 
-Server: 10.128.253.185 → The DNS server used for the query
+Server: 10.128.253.185 — the DNS server used for the query.
 
 Non-authoritative answer: Shows the IP addresses of google.com
 
-IPv4: 172.217.24.238
+IPv4: 172.217.24.238 — one of the resolved IPv4 addresses for google.com.
 
 IPv6: 2404:6800:4002:816::200e
 
@@ -136,7 +132,7 @@ This means google.com can be reached at these IP addresses.
 
 <img width="555" height="219" alt="Screenshot 2025-10-06 121908" src="https://github.com/user-attachments/assets/77f0da30-2279-4bc5-8e9c-a49bf6c2cc33" />
 
-Using nslookup -type=PTR 172.217.24.238 queries the DNS to find the domain names associated with an IP address.
+Using nslookup -type=PTR 172.217.24.238 queries DNS to find PTR records (domain names) associated with an IP address.
 
 Non-authoritative answer: Lists several hostnames for the IP 172.217.24.238, such as:
 
@@ -148,7 +144,7 @@ tzdela-bb-in-f14.1e100.net
 
 del03s05-in-f14.1e100.net
 
-This shows that reverse DNS mapping can return multiple hostnames for a single IP, especially for large services like Google
+This shows that reverse DNS (PTR) lookups can return multiple hostnames for a single IP, especially for large services like Google.
 
 **👉Nameserver (NS) lookup**
 
@@ -160,14 +156,14 @@ The authoritative section also returns their IP addresses (IPv4 and IPv6), e.g. 
 
 Meaning: NS records tell you which DNS servers are responsible for the domain. The presence of multiple NS entries provides redundancy — if one DNS server fails, others can respond.
 
-**⭐nc(Netcat)**
+### nc (netcat)
 
 nc (netcat): A lightweight command-line utility for reading from and writing to network connections. It can open TCP/UDP ports, act as a simple client or server, transfer files, and test services — often described as the “Swiss Army knife” of networking.
 
 <img width="391" height="326" alt="Screenshot 2025-10-06 144413" src="https://github.com/user-attachments/assets/eafe2ed2-8cc4-4324-9090-398cbe6877a9" />
 
 
-no port[s] to connect to — nc usually requires a port (e.g., nc 172.217.26.110 80). This message indicates you didn’t explicitly provide a port.
+"no port[s] to connect to" — nc usually requires a port (e.g., nc 172.217.26.110 80).
 
 Despite that, a HTTP exchange occurred and server-like responses were returned. The output shows two different HTTP responses:
 
@@ -175,11 +171,11 @@ A 200 OK header block (includes Content-Length, Content-Type, Last-Modified) —
 
 Followed by 403 Forbidden with Cache-Control: no-cache and a short body — the final response indicates access to the requested resource was denied.
 
-Client-Peer: 5.22.145.121:80 — the request appears to have been handled via an intermediate host or proxy at that IP and port.
+Client-Peer: 5.22.145.121:80 — this indicates the remote peer that responded; do not assume it is always an intermediate proxy without further evidence.
 
 Timestamps (Client-Date, Last-Modified) are in GMT and show when the server generated those headers.
 
-**⭐Whatweb**
+### WhatWeb
 
 WhatWeb: A command-line web scanner that identifies web technologies (servers, frameworks, CMS, headers, cookies, and more) used by a website.
 
@@ -187,15 +183,17 @@ WhatWeb: A command-line web scanner that identifies web technologies (servers, f
 
 whatweb https://google.com 
 
-The site https://google.com first responds with 301 Moved Permanently and redirects to https://www.google.com/.
-
+The site https://google.com`
+ responds with 301 Moved Permanently and redirects to https://www.google.com/.`
+ 
 The redirect response includes uncommon headers like content-security-policy-report-only (CSP in report-only mode) and alt-svc (advertises alternate services/protocols).
 
-The final URL https://www.google.com/ returns 200 OK, serves HTML5, and is powered by the gws server.
-
+The final URL https://www.google.com/`
+ returns 200 OK, serves HTML5, and is served by gws (Google Web Server).`
+ 
 Cookies observed: AEC and NID (both marked HttpOnly, so not accessible to JavaScript).
 
-Security headers: X-Frame-Options: SAMEORIGIN (prevents other sites from framing the page) and X-XSS-Protection: 0 (disabled — modern sites rely on CSP instead).
+Security headers: X-Frame-Options: SAMEORIGIN(prevents framing) and X-XSS-Protection: 0 (deprecated; modern sites rely on CSP).
 
 Other notes: accept-ch header present (client hint declarations) and Script detected (site serves JavaScript). IP addresses shown are Google IPs.
 
@@ -206,14 +204,13 @@ Takeaway: Google redirects google.com → www.google.com, serves a modern HTML5 
 <img width="1895" height="717" alt="Screenshot 2025-10-06 185328" src="https://github.com/user-attachments/assets/4d51e1d5-c5f1-4526-ba44-44055d94d4db" />
 
 
-`whatweb -v http://google.com`
-This command is used for web reconnaissance — it identifies technologies and configurations used by a website.
+`whatweb -v http://google.com` — this command is used for web reconnaissance; it identifies technologies and configurations used by a website.
 
 1. Initial Response (301 Redirect)
 
-Status: 301 Moved Permanently
-Means http://google.com redirects to http://www.google.com/.
-
+Status: 301 Moved Permanently — means http://google.com`
+ redirects to http://www.google.com/.`
+ 
 RedirectLocation: http://www.google.com/
 That’s the new URL.
 
@@ -238,26 +235,24 @@ IP: 142.250.194.36
 
 Country: United States
 
-🧩 Detected Plugins & Technologies
-Plugin	Meaning
-Cookies [AEC, NID]	The website sets cookies (for tracking, preferences, or login).
+🧩 Detected plugins & technologies: Cookies [AEC, NID] — the site sets cookies (e.g., for tracking, preferences, or login).
 HTML5	The site uses modern HTML5.
-HTTPServer [gws]	The site is hosted on Google Web Server.
+HTTPServer: gws — indicates Google Web Server.
 HttpOnly Cookies	These cookies cannot be accessed via JavaScript → helps prevent XSS attacks.
 Script	The site contains script tags (JavaScript).
 UncommonHeaders	Non-standard but interesting headers (like content-security-policy-report-only).
 X-Frame-Options: SAMEORIGIN	Prevents embedding in other sites.
 X-XSS-Protection: 0	Browser XSS filter disabled (by Google).
 
-📡 HTTP Headers (Summary)
+**HTTP headers (summary):**
+- `Server: gws`
+- `Content-Type: text/html; charset=ISO-8859-1`
+- `Cache-Control: private, max-age=0`
+- `Content-Security-Policy-Report-Only: ...`
+- `X-XSS-Protection: 0`
+- `X-Frame-Options: SAMEORIGIN`
+- `Set-Cookie: AEC, NID (HttpOnly, Secure)`
 
-Server: gws
-Content-Type: text/html; charset=ISO-8859-1
-Cache-Control: private, max-age=0
-Content-Security-Policy-Report-Only: ...
-X-XSS-Protection: 0
-X-Frame-Options: SAMEORIGIN
-Set-Cookie: AEC, NID (HttpOnly, Secure)
 
 These headers reveal:
 
@@ -269,8 +264,8 @@ Cookie details
 
 Policy enforcement
 
-**⭐Conclusion**
+## Conclusion
 
-This practical focused on the information-gathering phase of cybersecurity testing using basic reconnaissance tools in Kali Linux. Tools such as nslookup, whois lookup, whatweb, Netcraft, and nc were used to collect details about domains, servers, and network configurations. Each tool helped reveal different aspects of the target — from DNS records and registration details to web technologies and server headers. Through this process, I learned how to identify domain ownership, hosting information, redirections, and basic security settings. Overall, this exercise helped me understand how initial reconnaissance builds the foundation for further vulnerability assessment and penetration testing.
+This project was created for educational purposes only. All tools and techniques demonstrated here must be used responsibly and legally. Do not test or gather information on any website or system without proper authorization. The author is not responsible for misuse or illegal activity resulting from this information.
 
 # ***This project is created only for educational and learning purposes. All tools and techniques demonstrated here should be used responsibly and legally. Do not test or gather information on any website or system without proper authorization. The author is not responsible for any misuse or illegal activity performed using this information.***
