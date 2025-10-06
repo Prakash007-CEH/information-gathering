@@ -43,7 +43,8 @@ This information helps identify who registered the domain, how long it has been 
 
 Instead of using the command line tools, you can also rely on webbased tools such as: [whois.domaintools.com]( whois.domaintools.com)
 
-<img width="954" height="705" alt="Screenshot 2025-10-05 194544" src="https://github.com/user-attachments/assets/e87e92c9-9dc5-4039-9dfe-faaa0682c980" />
+<img width="1007" height="864" alt="Screenshot 2025-10-06 145844" src="https://github.com/user-attachments/assets/ae397538-71b9-44ef-95b4-02a64adda03b" />
+
 
 Moreover we can get the IP address of one of the machines of the organization we are studying.
 
@@ -131,11 +132,9 @@ IPv6: 2404:6800:4002:816::200e
 
 This means google.com can be reached at these IP addresses.
 
+**👉Reverse DNS Lookup (PTR)**
 
 <img width="555" height="219" alt="Screenshot 2025-10-06 121908" src="https://github.com/user-attachments/assets/77f0da30-2279-4bc5-8e9c-a49bf6c2cc33" />
-
-
-**👉Reverse DNS Lookup (PTR)**
 
 Using nslookup -type=PTR 172.217.24.238 queries the DNS to find the domain names associated with an IP address.
 
@@ -151,13 +150,54 @@ del03s05-in-f14.1e100.net
 
 This shows that reverse DNS mapping can return multiple hostnames for a single IP, especially for large services like Google
 
-<img width="452" height="336" alt="Screenshot 2025-10-06 122110" src="https://github.com/user-attachments/assets/2be9e1d3-61a8-4fa9-a9da-a44f2ab60d38" />
-
 **👉Nameserver (NS) lookup**
+
+<img width="452" height="336" alt="Screenshot 2025-10-06 122110" src="https://github.com/user-attachments/assets/2be9e1d3-61a8-4fa9-a9da-a44f2ab60d38" />
 
 This command lists the authoritative DNS servers for google.com.
 Output shows four nameservers: ns1.google.com, ns2.google.com, ns3.google.com, ns4.google.com.
 The authoritative section also returns their IP addresses (IPv4 and IPv6), e.g. ns1.google.com → 216.239.32.10 and 2001:4860:4802:32::a.
 
 Meaning: NS records tell you which DNS servers are responsible for the domain. The presence of multiple NS entries provides redundancy — if one DNS server fails, others can respond.
+
+**⭐nc(Netcat)**
+
+nc (netcat): A lightweight command-line utility for reading from and writing to network connections. It can open TCP/UDP ports, act as a simple client or server, transfer files, and test services — often described as the “Swiss Army knife” of networking.
+
+<img width="391" height="326" alt="Screenshot 2025-10-06 144413" src="https://github.com/user-attachments/assets/eafe2ed2-8cc4-4324-9090-398cbe6877a9" />
+
+
+no port[s] to connect to — nc usually requires a port (e.g., nc 172.217.26.110 80). This message indicates you didn’t explicitly provide a port.
+
+Despite that, a HTTP exchange occurred and server-like responses were returned. The output shows two different HTTP responses:
+
+A 200 OK header block (includes Content-Length, Content-Type, Last-Modified) — this looks like a cached/initial header response.
+
+Followed by 403 Forbidden with Cache-Control: no-cache and a short body — the final response indicates access to the requested resource was denied.
+
+Client-Peer: 5.22.145.121:80 — the request appears to have been handled via an intermediate host or proxy at that IP and port.
+
+Timestamps (Client-Date, Last-Modified) are in GMT and show when the server generated those headers.
+
+**⭐Whatweb**
+
+WhatWeb: A command-line web scanner that identifies web technologies (servers, frameworks, CMS, headers, cookies, and more) used by a website.
+
+<img width="1906" height="131" alt="Screenshot 2025-10-06 145033" src="https://github.com/user-attachments/assets/37185608-988b-4a8e-ad3c-ca1b366fc93a" />
+
+whatweb https://google.com 
+
+The site https://google.com first responds with 301 Moved Permanently and redirects to https://www.google.com/.
+
+The redirect response includes uncommon headers like content-security-policy-report-only (CSP in report-only mode) and alt-svc (advertises alternate services/protocols).
+
+The final URL https://www.google.com/ returns 200 OK, serves HTML5, and is powered by the gws server.
+
+Cookies observed: AEC and NID (both marked HttpOnly, so not accessible to JavaScript).
+
+Security headers: X-Frame-Options: SAMEORIGIN (prevents other sites from framing the page) and X-XSS-Protection: 0 (disabled — modern sites rely on CSP instead).
+
+Other notes: accept-ch header present (client hint declarations) and Script detected (site serves JavaScript). IP addresses shown are Google IPs.
+
+Takeaway: Google redirects google.com → www.google.com, serves a modern HTML5 site with CSP in report-only mode, has HttpOnly cookies, and uses common anti-framing protections.
 
